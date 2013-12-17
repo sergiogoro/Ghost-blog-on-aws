@@ -27,7 +27,8 @@
   \section{Launch an EC2 instance}
     %\paragraph
     \begin{itemize}
-      \item Select ``Free tier only'' and choose ``Amazon Linux AMI 2013.09.2'' 64 bit.
+      %\item Select ``Free tier only'' and choose ``Amazon Linux AMI 2013.09.2'' 64 bit.
+      \item Select ``Free tier only'' and choose ``Ubuntu LTS'' 64 bit.
       \item Next: Configure instance details
       \item Next: Tag Instance.
         \begin{itemize}
@@ -63,17 +64,21 @@
   \section{Prepare the system on our instance}
     \subsection{Update the system}
       \begin{quotation}
-        %sudo apt-get -y update \&\& sudo apt-get -y upgrade \&\& sudo apt-get -y dist-upgrade
-        sudo yum update -y
+        sudo apt-get -y update \&\& sudo apt-get -y upgrade \&\& sudo apt-get -y dist-upgrade
+        %sudo yum update -y
       \end{quotation}
 
-    \subsection{Install gcc compiler}
+    \subsection{Install compilers and more}
       \begin{quotation}
-        %sudo apt-get -y install gcc %UBUNTU
-        %sudo apt-get -y install build-essential %UBUNTU
-        sudo yum install -y gcc
+        sudo apt-get -y install gcc %UBUNTU
 
-        sudo yum install -y gcc-c++ compat-gcc-32 compat-gcc-32-c++
+        sudo apt-get -y install build-essential %UBUNTU
+
+        sudo apt-get -y install unzip
+
+        %sudo yum install -y gcc
+
+        %sudo yum install -y gcc-c++ compat-gcc-32 compat-gcc-32-c++
       \end{quotation}
 
     \subsection{Install Node.js}
@@ -101,15 +106,17 @@
 
         cd /var/www
 
-        wget https://ghost.org/zip/ghost-latest.zip
+        sudo wget https://ghost.org/zip/ghost-latest.zip
 
-        unzip -d ghost ghost-latest.zip
+        sudo unzip -d ghost ghost-latest.zip
 
-        rm ghost-latest.zip
+        sudo rm ghost-latest.zip
 
         cd ghost
 
-        sudo /usr/local/bin/npm install OR sudo /usr/local/bin/npm install --production
+        sudo npm install --production
+
+        %sudo /usr/local/bin/npm install OR sudo /usr/local/bin/npm install --production
       \end{quotation}
 
     \subsection{Configure Ghost}
