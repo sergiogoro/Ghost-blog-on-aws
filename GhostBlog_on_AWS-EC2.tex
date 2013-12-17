@@ -1,1 +1,132 @@
-#!
+%Ghost Blog on AWS EC2 free tier
+%Sergio González
+
+%\documentclass[a4paper]{article}
+\documentclass[a4paper]{report}
+
+\usepackage[english]{babel}
+\usepackage{color}
+\usepackage{fullpage}
+\usepackage{url}
+
+\title{Ghost Blog on AWS EC2 free tier}
+\date{} %Excludes date
+\author{Sergio Gonz\'alez}
+
+
+\begin{document}
+
+  \maketitle
+
+  \begin{abstract}
+    Abstract \ldots
+  \end{abstract}
+
+  \tableofcontents
+
+  \section{Launch an EC2 instance}
+    %\paragraph
+    \begin{itemize}
+      \item Select ``Free tier only'' and choose ``Amazon Linux AMI 2013.09.2'' 64 bit.
+      \item Next: Configure instance details
+      \item Next: Tag Instance.
+        \begin{itemize}
+          \item Name your instance, under the ``Value'' field.
+        \end{itemize}
+      \item Next: Configure security group
+        \begin{itemize}
+          \item Add Rule
+          \begin{itemize}
+            \item HTTP
+            \item HTTPS
+          \end{itemize}
+        \end{itemize}
+      \item Review and Launch
+      \item Launch
+        \begin{itemize}
+          \item Create a new key pair
+          \item Name it \& download it
+        \end{itemize}
+      \item Launch Instance
+    \end{itemize}
+
+  \section{Connect to the instance}
+    \begin{itemize}
+      \item Go to EC2 dashboard, Instances
+      \item Select the instance and click ``Connect''
+        \begin{itemize}
+          \item chmod 400 yourKey.pem
+          \item ssh -i yourKey.pem ec2-user@yourInstancePublicIP
+        \end{itemize}
+    \end{itemize}
+
+  \section{Prepare the system on our instance}
+    \subsection{Update the system}
+      \begin{quotation}
+        %sudo apt-get -y update \&\& sudo apt-get -y upgrade \&\& sudo apt-get -y dist-upgrade
+        sudo yum update -y
+      \end{quotation}
+
+    \subsection{Install gcc compiler}
+      \begin{quotation}
+        %sudo apt-get -y install gcc %UBUNTU
+        %sudo apt-get -y install build-essential %UBUNTU
+        sudo yum install -y gcc
+
+        sudo yum install -y gcc-c++ compat-gcc-32 compat-gcc-32-c++
+      \end{quotation}
+
+    \subsection{Install Node.js}
+      \begin{quotation}
+        wget http://nodejs.org/dist/node-latest.tar.gz
+
+        tar -xzf node-latest.tar.gz
+
+        rm node-latest.tar.gz
+
+        cd node-directory
+
+        ./configure
+
+        make
+
+        sudo make install
+      \end{quotation}
+
+    \subsection{Install Ghost}
+      \begin{quotation}
+        %cd
+
+        sudo mkdir -p /var/www
+
+        cd /var/www
+
+        wget https://ghost.org/zip/ghost-latest.zip
+
+        unzip -d ghost ghost-latest.zip
+
+        rm ghost-latest.zip
+
+        cd ghost
+
+        sudo /usr/local/bin/npm install OR sudo /usr/local/bin/npm install --production
+      \end{quotation}
+
+    \subsection{Configure Ghost}
+      \begin{quotation}
+        vim config.example.js
+        \begin{itemize}
+          \item Under ``development'' and ``production:''
+            \begin{itemize}
+              \item Change ``host: '127.0.0.1','' to ``host: 'yourInstancePublicIP',''
+              \item Change ``port: '2368','' to ``port: '80',''
+            \end{itemize}
+          \item
+        \end{itemize}
+        sudo /usr/local/bin/npm --production start
+      \end{quotation}
+
+
+
+
+\end{document}
